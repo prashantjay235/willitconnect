@@ -1,0 +1,69 @@
+<html>
+
+<h2>Willitconnect</h2>
+
+Host: <input id="host">
+Port: <input id="port">
+
+<br><br>
+
+<button onclick="tcp()">TCP Test</button>
+<button onclick="dns()">DNS Test</button>
+<button onclick="http()">HTTP Test</button>
+<button onclick="ping()">Ping</button>
+
+<pre id="result"></pre>
+
+<script>
+
+function getHost(){
+ return document.getElementById("host").value
+}
+
+function getPort(){
+ return document.getElementById("port").value
+}
+
+async function tcp(){
+
+let res = await fetch("/tcp",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+host:getHost(),
+port:getPort()
+})
+})
+
+let data = await res.json()
+document.getElementById("result").innerText=data.output
+}
+
+async function dns(){
+
+let res = await fetch("/dns?host="+getHost())
+let data = await res.json()
+document.getElementById("result").innerText=data.output
+
+}
+
+async function http(){
+
+let res = await fetch("/http?host="+getHost())
+let data = await res.json()
+document.getElementById("result").innerText=data.output
+
+}
+
+async function ping(){
+
+let res = await fetch("/ping?host="+getHost())
+let data = await res.json()
+document.getElementById("result").innerText=data.output
+
+}
+
+
+</script>
+
+</html>
